@@ -19,7 +19,7 @@ public class Game : Node2D
 
     KinematicBody2D leftPaddle;
     KinematicBody2D rightPaddle;
-    float paddleSpeed = 150f;
+    float paddleSpeed = 250f;
     bool leftPaddleUp, leftPaddleDown, rightPaddleUp, rightPaddleDown = false;
 
     Random prng;
@@ -77,6 +77,8 @@ public class Game : Node2D
             resetGame();
             play = false;
             instructions.Visible = true;
+            leftPaddleUp = false;
+            leftPaddleDown = false;
         }
     }
 
@@ -86,7 +88,7 @@ public class Game : Node2D
         {
             float leftMove = (leftPaddleUp) ? -paddleSpeed : (leftPaddleDown) ? paddleSpeed : 0;
             Vector2 rightMove = new Vector2(0, ball.Position.y - rightPaddle.Position.y);
-            rightMove *= 10;
+            rightMove *= ballSpeed / 10;
 
             if (Math.Abs(rightMove.y) > paddleSpeed)
             {
@@ -117,10 +119,8 @@ public class Game : Node2D
                 }
                 else
                 {
-                    GD.Print(ballVel);
                     ballVel = ballVel.Bounce(col.Normal);
                     ballVel = ballVel.Normalized() * ballSpeed;
-                    GD.Print(ballVel);
                 }
             }
         }

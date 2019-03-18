@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Game.cs" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://Minecraft.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://paddle.png" type="Texture" id=2]
+[ext_resource path="res://ball.png" type="Texture" id=3]
+[ext_resource path="res://Minecraft.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 38.4 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=6]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 320, 10 )
@@ -17,87 +18,74 @@ size = 30
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
-font_data = ExtResource( 3 )
+font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 30
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
-font_data = ExtResource( 3 )
+font_data = ExtResource( 4 )
 
 [node name="Playspace" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Paddle Left" type="KinematicBody2D" parent="."]
-position = Vector2( 40, 178.4 )
+position = Vector2( 0.200165, 180 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="GFX" type="Sprite" parent="Paddle Left"]
-scale = Vector2( 0.3, 1.2 )
+position = Vector2( 39.7998, 0 )
 texture = ExtResource( 2 )
 
 [node name="Collision" type="CollisionShape2D" parent="Paddle Left"]
+position = Vector2( 39.7998, 0 )
 shape = SubResource( 1 )
 
 [node name="Paddle Right" type="KinematicBody2D" parent="."]
-position = Vector2( 600, 180 )
+position = Vector2( 640, 178.4 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="GFX" type="Sprite" parent="Paddle Right"]
-position = Vector2( 0.400024, 1.60001 )
-scale = Vector2( 0.3, 1.2 )
+position = Vector2( -39.9998, 1.60001 )
 texture = ExtResource( 2 )
 
 [node name="Collision" type="CollisionShape2D" parent="Paddle Right"]
-position = Vector2( 0.400024, 1.60001 )
+position = Vector2( -39.9998, 1.60001 )
 shape = SubResource( 1 )
 
 [node name="Ball" type="KinematicBody2D" parent="."]
-position = Vector2( 310, 181.6 )
+position = Vector2( 310, 180 )
 __meta__ = {
 "_edit_group_": true
 }
 
 [node name="GFX" type="Sprite" parent="Ball"]
-scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 
 [node name="Collision" type="CollisionShape2D" parent="Ball"]
-shape = SubResource( 2 )
+shape = SubResource( 6 )
 
 [node name="VisCheck" type="VisibilityNotifier2D" parent="Ball"]
 
 [node name="Top Wall" type="StaticBody2D" parent="."]
-editor/display_folded = true
 __meta__ = {
 "_edit_group_": true
 }
-
-[node name="Sprite" type="Sprite" parent="Top Wall"]
-position = Vector2( 320.1, -10 )
-scale = Vector2( 9.99687, 0.3 )
-texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Top Wall"]
 position = Vector2( 320, -10 )
 shape = SubResource( 3 )
 
 [node name="Bottom Wall" type="StaticBody2D" parent="."]
-editor/display_folded = true
 position = Vector2( 0, 380 )
 __meta__ = {
 "_edit_group_": true
 }
-
-[node name="Sprite" type="Sprite" parent="Bottom Wall"]
-position = Vector2( 320.1, -10 )
-scale = Vector2( 9.99687, 0.3 )
-texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom Wall"]
 position = Vector2( 320, -10 )
@@ -127,12 +115,32 @@ text = "0"
 scroll_active = false
 
 [node name="Instructions" type="RichTextLabel" parent="."]
-margin_left = 0.200165
-margin_top = 170.0
-margin_right = 640.2
-margin_bottom = 210.0
+margin_top = 10.0
+margin_right = 640.0
+margin_bottom = 360.0
 custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
-bbcode_text = "[center]Press Space to play![/center]"
-text = "Press Space to play!"
+bbcode_text = "[center]Press Space to play
+
+
+
+
+
+
+
+
+W, Up, or num 8 to move up.
+S, Down, or num 2 to move down.[/center]"
+text = "Press Space to play
+
+
+
+
+
+
+
+
+W, Up, or num 8 to move up.
+S, Down, or num 2 to move down."
+scroll_active = false
 
