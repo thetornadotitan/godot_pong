@@ -1,0 +1,6 @@
+G:\Actual Projects\GoDot\pong\.mono\temp\bin\Release\pong.dll
+G:\Actual Projects\GoDot\pong\.mono\temp\bin\Release\pong.pdb
+G:\Actual Projects\GoDot\pong\.mono\temp\obj\Release\pong.csprojResolveAssemblyReference.cache
+G:\Actual Projects\GoDot\pong\.mono\temp\obj\Release\pong.csproj.CoreCompileInputs.cache
+G:\Actual Projects\GoDot\pong\.mono\temp\obj\Release\pong.dll
+G:\Actual Projects\GoDot\pong\.mono\temp\obj\Release\pong.pdb
