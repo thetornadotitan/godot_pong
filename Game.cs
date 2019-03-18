@@ -9,8 +9,8 @@ public class Game : Node2D
 
     KinematicBody2D ball;
     VisibilityNotifier2D ballVisibilityChecker;
-    float ballSpeed = 80f;
-    float ballStartSpeed = 80f;
+    float ballSpeed;
+    float ballStartSpeed = 150f;
 
     Vector2 ballVel;
     Vector2 ballStartPos;
@@ -30,12 +30,16 @@ public class Game : Node2D
     RichTextLabel rightScoreLabel;
     RichTextLabel instructions;
 
+    AudioStreamPlayer soundPlayer;
+    AudioStreamSample[] soundEffects;
+
     public override void _Ready()
     {
         prng = new Random();
         InitBall();
         InitPaddles();
         InitLables();
+        InitSounds();
     }
 
     public override void _Process(float delta)
@@ -73,6 +77,8 @@ public class Game : Node2D
         {
             if (!shooter) leftScore++;
             if (shooter) rightScore++;
+            soundPlayer.SetStream(soundEffects[4]);
+            soundPlayer.Play();
             updateScoreText();
             resetGame();
             play = false;
@@ -87,7 +93,8 @@ public class Game : Node2D
         if (play)
         {
             float leftMove = (leftPaddleUp) ? -paddleSpeed : (leftPaddleDown) ? paddleSpeed : 0;
-            Vector2 rightMove = new Vector2(0, ball.Position.y - rightPaddle.Position.y);
+            float rightPaddleOffset = MapValue(18, 342, -20, 20, leftPaddle.Position.y);
+            Vector2 rightMove = new Vector2(0, ball.Position.y - rightPaddle.Position.y + rightPaddleOffset);
             rightMove *= ballSpeed / 10;
 
             if (Math.Abs(rightMove.y) > paddleSpeed)
@@ -103,6 +110,9 @@ public class Game : Node2D
             KinematicCollision2D col = ball.MoveAndCollide(ballVel * delta);
             if (col != null)
             {
+                int beepIndex = prng.Next(0, 4);
+                soundPlayer.SetStream(soundEffects[beepIndex]);
+                soundPlayer.Play();
                 if (col.Collider == leftPaddle)
                 {
                     ballVel = ball.Position - leftPaddle.Position;
@@ -128,6 +138,7 @@ public class Game : Node2D
 
     private void InitBall()
     {
+        ballSpeed = ballStartSpeed;
         ball = GetNode(new NodePath("./Ball")) as KinematicBody2D;
         ballVisibilityChecker = ball.GetChild(2) as VisibilityNotifier2D;
         ballStartPos = ball.Position;
@@ -152,6 +163,17 @@ public class Game : Node2D
         instructions = GetNode(new NodePath("Instructions")) as RichTextLabel;
 
         updateScoreText();
+    }
+
+    private void InitSounds()
+    {
+        soundPlayer = GetNode(new NodePath("./Sound Player")) as AudioStreamPlayer;
+        soundEffects = new AudioStreamSample[5];
+        soundEffects[0] = ResourceLoader.Load("res://beep (1).wav") as AudioStreamSample;
+        soundEffects[1] = ResourceLoader.Load("res://beep (2).wav") as AudioStreamSample;
+        soundEffects[2] = ResourceLoader.Load("res://beep (3).wav") as AudioStreamSample;
+        soundEffects[3] = ResourceLoader.Load("res://beep (4).wav") as AudioStreamSample;
+        soundEffects[4] = ResourceLoader.Load("res://score.wav") as AudioStreamSample;
     }
 
     private void updateScoreText()
@@ -185,5 +207,10 @@ public class Game : Node2D
         rightPaddle.Position = rightPaddleStartPos;
         ballSpeed = ballStartSpeed;
         RandomizeBallVelocity();
+    }
+
+    public float MapValue(float a0, float a1, float b0, float b1, float a)
+    {
+        return b0 + (b1 - b0) * ((a - a0) / (a1 - a0));
     }
 }
